@@ -105,6 +105,10 @@ jobs:
     - name: Prepare Machine
       run: scripts/prepare-machine.ps1 -Tls ${{ matrix.tls }} -ForBuild -ForTest ${{ matrix.xdp }}
       shell: pwsh
+    - name: Install VC.14.35 Toolset
+      if: ${{ matrix.os == 'windows-2022' }}
+      run: scripts/install-older-vc-toolchain.ps1
+      shell: pwsh
     - name: Build
       shell: pwsh
       run: scripts/build.ps1 -Config Debug -Arch ${{ matrix.arch }} -Tls ${{ matrix.tls }} -DisableTools -DisablePerf -DynamicCRT ${{ matrix.systemcrypto }} ${{ matrix.xdp }} ${{ matrix.sanitize }}
